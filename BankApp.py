@@ -1,6 +1,7 @@
 import sqlite3
 import hashlib
-
+import os
+import time
 
 # Connect to sqlite3
 conn = sqlite3.connect("BankAppDB.db")
@@ -19,9 +20,18 @@ conn.commit()
 
 # Function to create a new account
 def create_account():
+    os.system("clear")
     print("Enter details for your new account.")
     username = input("Username: ")
     password = input("Password: ")
+
+    # Check if the username already exists
+    cursor.execute('SELECT * FROM bank_users WHERE name = ?', (username,))
+    existing_user = cursor.fetchone()
+
+    if existing_user:
+        print("Username already exists. Please choose a different username.")
+        return
 
     # Hash the password before saving
     password_hash = hashlib.sha256(password.encode()).hexdigest()
@@ -34,6 +44,7 @@ def create_account():
 
 # Function to check if an account exists
 def check_account():
+    os.system("clear")
     print("Enter your username and password to log in.")
     username = input("Username: ")
     password = input("Password: ")
@@ -46,19 +57,27 @@ def check_account():
 
     if user:
         print("Login successful!")
+        time.sleep(3)
+        os.system("clear")
     else:
         print("Invalid username or password.")
+        time.sleep(3)
+        os.system("clear")
         
 def DBList():
+    os.system("clear")
     cursor.execute('SELECT * FROM bank_users')
     all_rows = cursor.fetchall()
     for row in all_rows:
         print(row)
+    time.sleep(5)
+    os.system("clear")
 
 
 
 # Main loop for user interaction
 while True:
+    time.sleep(0.5)
     print("Hello User, Welcome to the bank!")
     print("1. Create an Account")
     print("2. Log in")
@@ -78,6 +97,7 @@ while True:
     elif choice == "4":
         check_account()
     elif choice == "5":
+        os.system("clear")
         DBList()
     else:
         print("Invalid option. Please try again.")
