@@ -1,6 +1,7 @@
 import sqlite3
 import hashlib
 
+
 # Connect to sqlite3
 conn = sqlite3.connect("BankAppDB.db")
 cursor = conn.cursor()
@@ -47,6 +48,13 @@ def check_account():
         print("Login successful!")
     else:
         print("Invalid username or password.")
+        
+def DBList():
+    cursor.execute('SELECT * FROM bank_users')
+    all_rows = cursor.fetchall()
+    for row in all_rows:
+        print(row)
+
 
 
 # Main loop for user interaction
@@ -56,6 +64,7 @@ while True:
     print("2. Log in")
     print("3. Exit")
     print("4. Check if account exists")
+    print("5. Print DB")
 
     choice = input("Select option: ")
 
@@ -68,6 +77,8 @@ while True:
         break
     elif choice == "4":
         check_account()
+    elif choice == "5":
+        DBList()
     else:
         print("Invalid option. Please try again.")
 
@@ -82,10 +93,6 @@ class BankUser:
         cursor.execute('INSERT INTO bank_users (name, password_hash) VALUES (?, ?)', (self.name, self.password_hash))
         conn.commit()
 
-
-# Example user creation (can be removed or modified for testing)
-u1 = BankUser("Ariosha", 123)
-u1.save_to_db()
 
 # Fetch and display all users (for debugging/testing purposes)
 cursor.execute('SELECT * FROM bank_users')
