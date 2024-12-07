@@ -93,5 +93,5 @@ all_rows = cursor.fetchall()
 for row in all_rows:
     print(row)
 
-# Clean up and close the database connection
+# Clean up and close the database connection 1
 conn.close()
