@@ -53,3 +53,26 @@ def DBList(cursor):
         print(row)
     time.sleep(5)
     os.system("clear")
+
+def DeleteUser(cursor):
+    os.system("clear")
+    print("Which User would you like to delete?")
+    username = input("Username: ")
+    password = input("Password: ")
+    
+    # Hash the entered password to compare with the stored hash
+    password_hash = hashlib.sha256(password.encode()).hexdigest()
+    
+    cursor.execute('SELECT * FROM bank_users WHERE name = ? AND password_hash = ?', (username, password_hash))
+    user = cursor.fetchone()
+    
+    if user:
+        choice = input("Are you sure you want to delete your account, Yes or No?: ")
+        if choice == "yes":
+            time.sleep(1)
+            os.system("clear")
+            print("Account Deleted!")
+        else: 
+            pass
+    else:
+        pass

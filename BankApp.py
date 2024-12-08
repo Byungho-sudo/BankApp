@@ -1,7 +1,7 @@
 import sqlite3
 import os
 import time
-from BankAppFunctions import create_account, check_account, DBList
+from BankAppFunctions import create_account, check_account, DBList, DeleteUser
 
 # Connect to sqlite3
 conn = sqlite3.connect("BankAppDB.db")
@@ -20,12 +20,14 @@ conn.commit()
 # Main loop for user interaction
 while True:
     time.sleep(0.5)
+    os.system("clear")
     print("Hello User, Welcome to the bank!")
     print("1. Create an Account")
     print("2. Log in")
     print("3. Print DB")
     print("4. Check if account exists")
     print("5. Exit")
+    print("6. Delete account")
 
     choice = input("Select option: ")
 
@@ -41,6 +43,8 @@ while True:
     elif choice == "5":
         print("Exiting the application.")
         break
+    elif choice == "6":
+        DeleteUser(cursor)
     else:
         print("Invalid option. Please try again.")
 
