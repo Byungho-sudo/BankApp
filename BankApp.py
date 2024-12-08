@@ -23,9 +23,9 @@ while True:
     print("Hello User, Welcome to the bank!")
     print("1. Create an Account")
     print("2. Log in")
-    print("3. Exit")
+    print("3. Print DB")
     print("4. Check if account exists")
-    print("5. Print DB")
+    print("5. Exit")
 
     choice = input("Select option: ")
 
@@ -34,13 +34,13 @@ while True:
     elif choice == "2":
         check_account(cursor)
     elif choice == "3":
-        print("Exiting the application.")
-        break
+        os.system("clear")
+        DBList(cursor)
     elif choice == "4":
         check_account(cursor)
     elif choice == "5":
-        os.system("clear")
-        DBList(cursor)
+        print("Exiting the application.")
+        break
     else:
         print("Invalid option. Please try again.")
 

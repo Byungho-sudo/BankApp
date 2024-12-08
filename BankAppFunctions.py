@@ -37,11 +37,11 @@ def check_account(cursor):
     user = cursor.fetchone()
 
     if user:
-        print("Login successful!")
+        print("Account exists!")
         time.sleep(3)
         os.system("clear")
     else:
-        print("Invalid username or password.")
+        print("No Account or, an Invalid username or password.")
         time.sleep(3)
         os.system("clear")
 
