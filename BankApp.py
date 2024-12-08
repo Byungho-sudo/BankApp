@@ -1,7 +1,7 @@
 import sqlite3
-import hashlib
 import os
 import time
+from BankAppFunctions import create_account, check_account, DBList
 
 # Connect to sqlite3
 conn = sqlite3.connect("BankAppDB.db")
@@ -17,64 +17,6 @@ CREATE TABLE IF NOT EXISTS bank_users (
 ''')
 conn.commit()
 
-
-# Function to create a new account
-def create_account():
-    os.system("clear")
-    print("Enter details for your new account.")
-    username = input("Username: ")
-    password = input("Password: ")
-
-    # Check if the username already exists
-    cursor.execute('SELECT * FROM bank_users WHERE name = ?', (username,))
-    existing_user = cursor.fetchone()
-
-    if existing_user:
-        print("Username already exists. Please choose a different username.")
-        return
-
-    # Hash the password before saving
-    password_hash = hashlib.sha256(password.encode()).hexdigest()
-
-    # Save the new account to the database
-    cursor.execute('INSERT INTO bank_users (name, password_hash) VALUES (?, ?)', (username, password_hash))
-    conn.commit()
-    print("Account created successfully!")
-
-
-# Function to check if an account exists
-def check_account():
-    os.system("clear")
-    print("Enter your username and password to log in.")
-    username = input("Username: ")
-    password = input("Password: ")
-
-    # Hash the entered password to compare with the stored hash
-    password_hash = hashlib.sha256(password.encode()).hexdigest()
-
-    cursor.execute('SELECT * FROM bank_users WHERE name = ? AND password_hash = ?', (username, password_hash))
-    user = cursor.fetchone()
-
-    if user:
-        print("Login successful!")
-        time.sleep(3)
-        os.system("clear")
-    else:
-        print("Invalid username or password.")
-        time.sleep(3)
-        os.system("clear")
-        
-def DBList():
-    os.system("clear")
-    cursor.execute('SELECT * FROM bank_users')
-    all_rows = cursor.fetchall()
-    for row in all_rows:
-        print(row)
-    time.sleep(5)
-    os.system("clear")
-
-
-
 # Main loop for user interaction
 while True:
     time.sleep(0.5)
@@ -88,37 +30,19 @@ while True:
     choice = input("Select option: ")
 
     if choice == "1":
-        create_account()
+        create_account(cursor, conn)
     elif choice == "2":
-        check_account()
+        check_account(cursor)
     elif choice == "3":
         print("Exiting the application.")
         break
     elif choice == "4":
-        check_account()
+        check_account(cursor)
     elif choice == "5":
         os.system("clear")
-        DBList()
+        DBList(cursor)
     else:
         print("Invalid option. Please try again.")
 
-
-# Class to represent a bank user (not currently in use in the loop)
-class BankUser:
-    def __init__(self, name, password):
-        self.name = name
-        self.password_hash = hashlib.sha256(password.encode()).hexdigest()
-
-    def save_to_db(self):
-        cursor.execute('INSERT INTO bank_users (name, password_hash) VALUES (?, ?)', (self.name, self.password_hash))
-        conn.commit()
-
-
-# Fetch and display all users (for debugging/testing purposes)
-cursor.execute('SELECT * FROM bank_users')
-all_rows = cursor.fetchall()
-for row in all_rows:
-    print(row)
-
-# Clean up and close the database connection 1
+# Clean up and close the database connection
 conn.close()
