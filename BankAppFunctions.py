@@ -1,6 +1,9 @@
 import hashlib
 import os
 import time
+import sqlite3
+
+conn = sqlite3.connect("BankAppDB.db")
 
 def create_account(cursor, conn):
     os.system("clear")
@@ -51,10 +54,10 @@ def DBList(cursor):
     all_rows = cursor.fetchall()
     for row in all_rows:
         print(row)
-    time.sleep(5)
+    time.sleep(3)
     os.system("clear")
 
-def DeleteUser(cursor):
+def DeleteUser(cursor, conn):
     os.system("clear")
     print("Which User would you like to delete?")
     username = input("Username: ")
@@ -67,12 +70,19 @@ def DeleteUser(cursor):
     user = cursor.fetchone()
     
     if user:
+        os.system("clear")
+        time.sleep(0.5)
         choice = input("Are you sure you want to delete your account, Yes or No?: ")
-        if choice == "yes":
-            time.sleep(1)
+        if choice.lower() == "yes":
             os.system("clear")
             print("Account Deleted!")
+            cursor.execute('DELETE FROM bank_users WHERE name = ? AND password_hash = ?', (username, password_hash))
+            conn.commit()  # Changes committed
+            time.sleep(1)
         else: 
-            pass
+            print("Account not deleted. Returning to menu...")
+            time.sleep(2)
     else:
-        pass
+        os.system("clear")
+        print("This user doesn't exist, returning to menu...")
+        time.sleep(0.5)

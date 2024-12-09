@@ -1,7 +1,7 @@
 import sqlite3
 import os
 import time
-from BankAppFunctions import create_account, check_account, DBList, DeleteUser
+from BankAppFunctions import *
 
 # Connect to sqlite3
 conn = sqlite3.connect("BankAppDB.db")
@@ -44,7 +44,7 @@ while True:
         print("Exiting the application.")
         break
     elif choice == "6":
-        DeleteUser(cursor)
+        DeleteUser(cursor, conn)
     else:
         print("Invalid option. Please try again.")
 
