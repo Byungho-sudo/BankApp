@@ -1,9 +1,6 @@
 import hashlib
 import os
 import time
-import sqlite3
-
-conn = sqlite3.connect("BankAppDB.db")
 
 def create_account(cursor, conn):
     os.system("clear")
